@@ -20,7 +20,7 @@ export default function ChangeDisplayNameForm({ displayName, setShowModal, toast
         setLoading(false)
 
         if (!result.statusResponse) {
-            setError("Eror al actualizar nombres y apellidos, intenta más tarde.")
+            setError("Error al actualizar nombres y apellidos, intenta más tarde.")
             return
         }
 
