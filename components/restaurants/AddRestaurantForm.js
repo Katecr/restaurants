@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View, ScrollView } from 'react-native'
-import { Button, Icon, Input } from 'react-native-elements'
+import { StyleSheet, Text, View, ScrollView, Alert } from 'react-native'
+import { Avatar, Button, Icon, Input } from 'react-native-elements'
 import CountryPicker from 'react-native-country-picker-modal'
+import { map, size, filter} from 'lodash'
+
+import { loadImageFromGallery } from '../../utils/helpers'
 
 
 export default function AddRestaurantForm({toastRef, setLoading, navigation }) {
@@ -11,6 +14,7 @@ export default function AddRestaurantForm({toastRef, setLoading, navigation }) {
     const [errorEmail, setErrorEmail] = useState(null)
     const [errorAddress, setErrorAddress] = useState(null)
     const [errorPhone, setErrorPhone] = useState(null)
+    const [imagesSelected, setImagesSelected] = useState([])
 
 
     const addRestaurant = () => {
@@ -28,7 +32,11 @@ export default function AddRestaurantForm({toastRef, setLoading, navigation }) {
                 errorAddress={errorAddress}
                 errorPhone={errorPhone}
             />
-            <UploadImage/>
+            <UploadImage
+                toastRef={toastRef}
+                imagesSelected={imagesSelected}
+                setImagesSelected={setImagesSelected}
+            />
             <Button 
                 title="Crear Restaurante"
                 onPress={addRestaurant}
@@ -38,16 +46,63 @@ export default function AddRestaurantForm({toastRef, setLoading, navigation }) {
     )
 }
 
-function UploadImage() {
+function UploadImage({toastRef, imagesSelected, setImagesSelected}) {
+    const imageSelected = async() => {
+        const response = await loadImageFromGallery([4,3])
+        if (!response.status){
+            toastRef.current.show("No has seleccionado ninguna imagen.", 3000)
+            return
+        }
+        setImagesSelected([...imagesSelected, response.image])
+    }
+
+    const removeImage = (image) => {
+        Alert.alert(
+            "Eliminar Imagen",
+            "¿Estás seguro que quieres eliminar la imagen?",
+            [
+                {
+                    text: "No",
+                    style: "cancel"
+                },
+                {
+                    text:"Sí",
+                    onPress: () => {
+                        setImagesSelected(
+                            filter(imagesSelected, (imageUrl) => imageUrl !== image)
+                            )
+                    }
+                }
+            ],
+            {
+                cancelable: true
+            }
+        )
+    }
+
     return (
         <ScrollView horizontal style={styles.viewImages}>
-            <Icon
-                type="material-community"
-                name="camera"
-                color="#7e7870" 
-                containerStyle={styles.containerIcon}           
-            />
-
+            {
+                size(imagesSelected) < 10 &&(
+                    <Icon
+                    type="material-community"
+                    name="camera"
+                    color="#7e7870" 
+                    containerStyle={styles.containerIcon} 
+                    onPress={imageSelected}          
+                    />
+                )
+            }
+            {
+                map(imagesSelected, (imageRestaurant, index) => (
+                <Avatar
+                    key={index}
+                    style={styles.miniatureStyle}
+                    source={{uri: imageRestaurant}}
+                    onPress={() => removeImage(imageRestaurant)}
+                />
+            ))
+            }
         </ScrollView>
     )
 }
@@ -165,5 +220,10 @@ const styles = StyleSheet.create({
         height: 70,
         width:80,
         backgroundColor:"#f9deb4"
+    },
+    miniatureStyle:{
+        width:70,
+        height:70,
+        marginRight:10
     }
 })
