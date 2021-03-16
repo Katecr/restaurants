@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import { Button, Input } from 'react-native-elements'
+import { StyleSheet, Text, View, ScrollView } from 'react-native'
+import { Button, Icon, Input } from 'react-native-elements'
 import CountryPicker from 'react-native-country-picker-modal'
 
 
@@ -28,12 +28,27 @@ export default function AddRestaurantForm({toastRef, setLoading, navigation }) {
                 errorAddress={errorAddress}
                 errorPhone={errorPhone}
             />
+            <UploadImage/>
             <Button 
                 title="Crear Restaurante"
                 onPress={addRestaurant}
                 buttonStyle={styles.btnAddRestaurant}
             />
         </View>
+    )
+}
+
+function UploadImage() {
+    return (
+        <ScrollView horizontal style={styles.viewImages}>
+            <Icon
+                type="material-community"
+                name="camera"
+                color="#7e7870" 
+                containerStyle={styles.containerIcon}           
+            />
+
+        </ScrollView>
     )
 }
 
@@ -137,5 +152,18 @@ const styles = StyleSheet.create({
     btnAddRestaurant:{
         margin: 20,
         backgroundColor:"#fb9104"
+    },
+    viewImages:{
+        flexDirection:"row",
+        marginHorizontal:20,
+        marginTop: 30
+    },
+    containerIcon:{
+        alignItems:"center",
+        justifyContent:"center",
+        marginRight: 10,
+        height: 70,
+        width:80,
+        backgroundColor:"#f9deb4"
     }
 })
