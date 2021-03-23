@@ -4,9 +4,12 @@ import { Avatar, Button, Icon, Input, Image } from 'react-native-elements'
 import CountryPicker from 'react-native-country-picker-modal'
 import { map, size, filter, isEmpty} from 'lodash'
 import MapView from 'react-native-maps'
+import uuid from 'random-uuid-v4'
 
 import { getCurrentLocation, loadImageFromGallery, validateEmail } from '../../utils/helpers'
+import { addDocumentWithoutId, getCurrentUser, uploadImage } from '../../utils/actions'
 import Modal from '../../components/Modal'
+
 
 
 
@@ -25,12 +28,49 @@ export default function AddRestaurantForm({toastRef, setLoading, navigation }) {
     const [locationRestaurant, setLocationRestaurant] = useState(null)
 
 
-    const addRestaurant = () => {
+    const addRestaurant = async() => {
         if(!validForm()){
             return
         }
         
-        console.log("Fuck yea!!")
+        setLoading(true)
+        const responseUploadImages = await uploadImages()
+        const restaurant = {
+            name: formData.name,
+            address: formData.address,
+            email: formData.email,
+            description: formData.description,
+            callingCode: formData.callingCode,
+            phone: formData.phone,
+            location: locationRestaurant,
+            images: responseUploadImages,
+            rating: 0,
+            ratingTotal:0,
+            quantityVoting: 0,
+            createA: new Date(),
+            createBy: getCurrentUser().uid
+        }
+        const responseAddDocument = await addDocumentWithoutId("restaurants", restaurant)
+        setLoading(false)
+
+        if(!responseAddDocument.statusResponse){
+            toastRef.current.show("Error al grabar el restaurante, por favor intenta más tarde", 3000)
+            return
+        }
+        navigation.navigate("restaurants")
+    }
+
+    const uploadImages = async() => {
+        const imagesUrl = []
+        await Promise.all(
+            map(imagesSelected, async(image) => {
+                const response = await uploadImage(image, "restaurants", uuid())
+                if(response.statusResponse){
+                    imagesUrl.push(response.url)
+                }
+            })
+        )
+        return imagesUrl
     }
 
     const validForm = () => {
