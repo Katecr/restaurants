@@ -16,13 +16,20 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "ios": {
-      "supportsTablet": true
+    "ios": {      
+      "supportsTablet": true,
+      "bundleIdentifier": "kate.restaurants"
     },
     "android": {
+      "package": "kate.restaurants",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
+      },
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCipADNqUf9FXjmNEH9KOOpdnMJiDnxLE8"
+        }
       },
       "permissions": [
         "CAMERA_ROLL",
