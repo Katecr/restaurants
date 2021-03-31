@@ -13,6 +13,7 @@ const widthScreen = Dimensions.get("window").width
 export default function Restaurant({ navigation, route }) {
     const { id, name } = route.params
     const [restaurant, setRestaurant] = useState(null)
+    const [activeSlide, setActiveSlide] = useState(0)
 
     navigation.setOptions({title: name})
 
@@ -37,6 +38,8 @@ export default function Restaurant({ navigation, route }) {
                 images={restaurant.images}
                 height={250}
                 width={widthScreen}
+                activeSlide={activeSlide}
+                setActiveSlide={setActiveSlide}
             />
             <Text>{restaurant.description}</Text>
         </ScrollView>
