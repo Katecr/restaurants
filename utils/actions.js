@@ -120,12 +120,12 @@ export const addDocumentWithoutId = async(collection, data) => {
 export const getRestaurants = async(limitRestaurants) => {
     const result = { statusResponse: true, error: null, restaurants: [], startRestaurant: null }
     try {
+        // const response = await db.collection("restaurants").orderBy("createAt", "desc").limit(limitRestaurants).get()
+
+        // const response = await db.collection("restaurants").limit(limitRestaurants).get()
+        
         const response = await db.collection("restaurants").get()
-        // const response = await db
-        //     .collection("restaurants")
-        //     .orderBy("createAt", "desc")
-        //     .limit(limitRestaurants)
-        //     .get()
+        
         if (response.docs.length > 0) {
             result.startRestaurant = response.docs[response.docs.length - 1]
         }
