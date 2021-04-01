@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import { Button } from 'react-native-elements'
 import firebase from 'firebase/app'
 
+
 export default function ListReviews({ navigation, idRestaurant }) {
 
     const [userLogged, setUserLogged] = useState(false)

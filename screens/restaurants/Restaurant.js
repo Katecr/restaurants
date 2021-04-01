@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useCallback } from 'react'
 import { Alert, Dimensions, StyleSheet, ScrollView, View, Text } from 'react-native'
 import CarouselImages from '../../components/CarouselImages'
 import { map } from 'lodash'
 import { Icon, ListItem, Rating } from 'react-native-elements'
+import { useFocusEffect } from '@react-navigation/native'
 
 import { getDocumentById } from '../../utils/actions'
 import Loading from '../../components/Loading'
@@ -21,17 +22,20 @@ export default function Restaurant({ navigation, route }) {
 
     navigation.setOptions({title: name})
 
-    useEffect(() => {
-        (async() => {
-            const response = await getDocumentById("restaurants", id)
-            if(response.statusResponse){
-                setRestaurant(response.document)
-            }else{
-                setRestaurant({})
-                Alert.alert("Ocurrio un problema cargando el restaurante, intente más tarde.")
-            }
-        })()
-    }, [])
+    useFocusEffect(
+        useCallback(() => {
+            (async() => {
+                const response = await getDocumentById("restaurants", id)
+                if(response.statusResponse){
+                    setRestaurant(response.document)
+                }else{
+                    setRestaurant({})
+                    Alert.alert("Ocurrio un problema cargando el restaurante, intente más tarde.")
+                }
+            })()
+        }, [])
+    )
+    
 
     if(!restaurant){
         return <Loading isVisible={true} text={"Cargando..."}/>
