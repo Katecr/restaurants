@@ -8,8 +8,7 @@ import { getDocumentById } from '../../utils/actions'
 import Loading from '../../components/Loading'
 import { formatPhone } from '../../utils/helpers'
 import MapRestaurant from '../../components/restaurants/MapRestaurant'
-
-
+import ListReviews from '../../components/restaurants/ListReviews'
 
 
 
@@ -57,6 +56,10 @@ export default function Restaurant({ navigation, route }) {
                 address={restaurant.address}
                 email={restaurant.email}
                 phone={formatPhone(restaurant.callingCode, restaurant.phone)}
+            />
+            <ListReviews
+                navigation={navigation}
+                idRestaurant={restaurant.id}
             />
         </ScrollView>
     )

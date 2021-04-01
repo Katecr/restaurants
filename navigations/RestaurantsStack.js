@@ -24,6 +24,7 @@ export default function RestaurantsStack() {
                 name="restaurant"
                 component={Restaurant}      
            />
+           
        </Stack.Navigator> 
     )
 }
