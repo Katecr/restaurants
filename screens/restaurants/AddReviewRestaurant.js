@@ -162,6 +162,6 @@ const styles = StyleSheet.create({
         width: "95%"
     },
     btn: {
-        backgroundColor: "#442484"
+        backgroundColor: "#fb9104"
     }
 })

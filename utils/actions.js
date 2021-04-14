@@ -184,3 +184,57 @@ export const updateDocument = async(collection, id, data) => {
     }
     return result     
 }
+
+export const getRestaurantReviews = async(id) => {
+    const result = { statusResponse: true, error: null, reviews: [] }
+    try {
+        const response = await db
+            .collection("reviews")
+            .where("idRestaurant", "==", id)
+            .get()
+        response.forEach((doc) => {
+            const review = doc.data()
+            review.id = doc.id
+            result.reviews.push(review)
+        })
+    } catch (error) {
+        result.statusResponse = false
+        result.error = error
+    }
+    return result
+}
+
+export const getIsFavorite = async(idRestaurant) => {
+    const result = { statusResponse: true, error: null, isFavorite: false }
+    try {
+        const response = await db
+            .collection("favorites")
+            .where("idRestaurant", "==", idRestaurant)
+            .where("idUser", "==", getCurrentUser().uid)
+            .get()
+        result.isFavorite = response.docs.length > 0
+    } catch (error) {
+        result.statusResponse = false
+        result.error = error
+    }
+    return result     
+}
+
+export const deleteFavorite = async(idRestaurant) => {
+    const result = { statusResponse: true, error: null }
+    try {
+        const response = await db
+            .collection("favorites")
+            .where("idRestaurant", "==", idRestaurant)
+            .where("idUser", "==", getCurrentUser().uid)
+            .get()
+        response.forEach(async(doc) => {
+            const favoriteId = doc.id
+            await db.collection("favorites").doc(favoriteId).delete()
+        })    
+    } catch (error) {
+        result.statusResponse = false
+        result.error = error
+    }
+    return result     
+}
