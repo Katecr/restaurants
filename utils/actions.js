@@ -330,3 +330,14 @@ export const getToken = async() => {
 
     return token
 }
+
+export const addDocumentWithId = async(collection, data, doc) => {
+    const result = { statusResponse: true, error: null }
+    try {
+        await db.collection(collection).doc(doc).set(data)
+    } catch (error) {
+        result.statusResponse = false
+        result.error = error
+    }
+    return result     
+}
