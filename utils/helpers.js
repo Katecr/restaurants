@@ -2,8 +2,8 @@ import * as Permissions from 'expo-permissions'
 import * as ImagePicker from 'expo-image-picker'
 import * as Location from 'expo-location'
 import { Alert } from 'react-native'
-import { size } from 'lodash';
-import { Linking } from 'react-native';
+import { size } from 'lodash'
+import { Linking } from 'react-native'
 
 export function validateEmail(email) {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -63,7 +63,7 @@ export const formatPhone = (callingCode, phone) => {
 }
 
 export const callNumber = (phoneNumber) => {
-    Linking.openURL(`tel:&{phoneNumber}`)
+    Linking.openURL(`tel:${phoneNumber}`)
 }
 
 export const sendWhatsApp = (phoneNumber, text) => {
@@ -75,4 +75,8 @@ export const sendWhatsApp = (phoneNumber, text) => {
         }
         return Linking.openURL(link)
     })
+}
+
+export const sendEmail = (to, subject, body) => {
+    Linking.openURL(`mailto:${to}?subject=${subject}&body=${body}`)
 }

@@ -10,7 +10,7 @@ import Toast from 'react-native-easy-toast'
 
 import { addDocumentWithoutId, getCurrentUser, getDocumentById, getIsFavorite, deleteFavorite } from '../../utils/actions'
 import Loading from '../../components/Loading'
-import { formatPhone } from '../../utils/helpers'
+import { callNumber, formatPhone, sendEmail } from '../../utils/helpers'
 import MapRestaurant from '../../components/restaurants/MapRestaurant'
 import ListReviews from '../../components/restaurants/ListReviews'
 
@@ -26,11 +26,13 @@ export default function Restaurant({ navigation, route }) {
     const [activeSlide, setActiveSlide] = useState(0)
     const [isFavorite, setIsFavorite] = useState(false)
     const [userLogged, setUserLogged] = useState(false)
+    const [currentUser, setCurrentUser] = useState(null)
     const [loading, setLoading] = useState(false)
 
 
     firebase.auth().onAuthStateChanged(user => {
         user ? setUserLogged(true) : setUserLogged(false)
+        setCurrentUser(user)
     })
 
     navigation.setOptions({title: name})
@@ -126,6 +128,7 @@ export default function Restaurant({ navigation, route }) {
                 address={restaurant.address}
                 email={restaurant.email}
                 phone={formatPhone(restaurant.callingCode, restaurant.phone)}
+                currentUser={currentUser}
             />
             <ListReviews
                 navigation={navigation}
@@ -137,13 +140,29 @@ export default function Restaurant({ navigation, route }) {
     )
 }
 
-function RestaurantInfo({ name, location, address, email, phone }){
+function RestaurantInfo({ name, location, address, email, phone, currentUser }){
     const listInfo = [
-        {text: address, iconName: "map-marker"},
-        {text: phone, iconName: "phone"},
-        {text: email, iconName: "at"}
-
+        { type:"address", text: address, iconLeft: "map-marker"},
+        { type:"phone", text: phone, iconLeft: "phone", iconRight: "whatsapp"},
+        { type:"email", text: email, iconLeft: "at"},
     ]
+
+    const actionLeft = (type) => {
+        if(type == "phone"){
+            callNumber(phone)
+        }else if (type == "email"){
+            if(currentUser) {
+                sendEmail(email, "Interesado",`Soy ${currentUser.displayName}, estoy interesado en sus servicios.`)
+            }else{
+                sendEmail(email, "Interesado",`Estoy interesado en sus servicios.`)
+            }
+        }
+    }
+
+    const actionRight = (type) => {
+        console.log("Right", type)
+    }
+
     return(
         <View style={styles.viewRestaurantInfo}>
             <Text style={styles.restaurantInfoTitle}>Información sobre el restaurante</Text>
@@ -160,12 +179,24 @@ function RestaurantInfo({ name, location, address, email, phone }){
                     >
                         <Icon
                             type="material-community"
-                            name={item.iconName}
+                            name={item.iconLeft}
                             color="#ff9600"
+                            onPress={() => actionLeft(item.type)}
                         />
                         <ListItem.Content>
                             <ListItem.Title>{item.text}</ListItem.Title>
                         </ListItem.Content>
+                        {
+                            item.iconRight && (
+                                <Icon
+                                    type="material-community"
+                                    name={item.iconRight}
+                                    color="#ff9600"
+                                    onPress={() => actionRight(item.type)}
+                                />
+                            )
+                        }
+                        
                     </ListItem>
                 ))
             }
