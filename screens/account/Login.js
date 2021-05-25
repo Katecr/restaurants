@@ -19,7 +19,20 @@ export default function Login() {
                 <CreateAccount/>
             </View>
             <Divider style={styles.divider}/>
+            <View style={styles.containerRecover}>
+                <RecoverPassword/>
+            </View>
         </KeyboardAwareScrollView>
+    )
+}
+
+function RecoverPassword() {
+    const navigation = useNavigation()
+
+    return(
+        <Text style={styles.registe} onPress={() => navigation.navigate("recover-password")}>
+            ¿Olvidaste tu contraseña?{" "}<Text style={styles.btnRegister}>Recupérala</Text>
+        </Text>
     )
 }
 
@@ -53,6 +66,11 @@ const styles = StyleSheet.create({
         margin:40
     },
     register:{
+        marginTop:15,
+        marginHorizontal:10,
+        alignSelf:"center"
+    },
+    containerRecover:{
         marginTop:15,
         marginHorizontal:10,
         alignSelf:"center"
