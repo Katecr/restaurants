@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "794742643452",
+    "project_id": "restaurants-3e9b1",
+    "storage_bucket": "restaurants-3e9b1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:794742643452:android:87a7e581196897d5155579",
+        "android_client_info": {
+          "package_name": "kate.restaurants"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "794742643452-0q8tfvabh6ootid7m9f89sks8b95ipc6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "kate.restaurants",
+            "certificate_hash": "3ca098b039063620d823faff0f8c211691825d63"
+          }
+        },
+        {
+          "client_id": "794742643452-68gc1ciu6223c0ddbil5vt3o6h1p94ii.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCipADNqUf9FXjmNEH9KOOpdnMJiDnxLE8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "794742643452-68gc1ciu6223c0ddbil5vt3o6h1p94ii.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "794742643452-m6tdd03gnhdh3n00q7v3s7094mtuephh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "kate.restaurants"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

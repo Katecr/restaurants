@@ -18,10 +18,17 @@
     ],
     "ios": {      
       "supportsTablet": true,
-      "bundleIdentifier": "kate.restaurants"
+      "bundleIdentifier": "kate.restaurants",
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": "com.googleusercontent.apps.794742643452-m6tdd03gnhdh3n00q7v3s7094mtuephh"
+        }
+      },
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
       "package": "kate.restaurants",
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
